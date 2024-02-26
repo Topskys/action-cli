@@ -47,8 +47,6 @@ export default async (projectName, options) => {
         console.log(JSON.stringify(err));
         process.abort();
     }
-
-    // 
 }
 
 
@@ -57,23 +55,27 @@ export default async (projectName, options) => {
  * @param templateName 模板名称或仓库地址
  */
 export async function downloadTemplate(templateName?: string) {
-    const templates:any = await getTemplates();//JSON.parse(await readFile("template.json"));
-    const question = [
-        {
-            name: "template",
-            type: 'list',
-            message: "choose a template to create project",
-            // default: "vue2", // expand 失效
-            choices: templates.map(o => o.name),
-        }
-    ];
-    const templateRepo = URL_REG.test(templateName) ? templateName : (await inquirer.prompt(question)).template;
-    const templatePath = path.join(process.cwd(), templateRepo);
+    const templatePath = path.join(process.cwd(), templateName);
     if (await readDir(templatePath)) {
         console.log(`${templatePath} is extended! Please remove it.`);
         process.exit();
     }
-    await loading(`Downloading template...`, exec, `git clone ${templates.find(o => o.key == templateRepo).value}`); // 下载模板
+    if (URL_REG.test(templateName)) {
+        await loading(`Downloading template...`, exec, `git clone ${templateName}`); // 下载模板
+    } else {
+        const templates: any = await getTemplates();//JSON.parse(await readFile("template.json"));
+        const question = [
+            {
+                name: "template",
+                type: 'list',
+                message: "choose a template to create project",
+                // default: "vue2", // expand 失效
+                choices: templates.map(o => o.name),
+            }
+        ];
+        const templateRepo = await inquirer.prompt(question);
+        await loading(`Downloading template...`, exec, `git clone ${templates.find(o => o.key == templateRepo).value}`); // 下载模板
+    }
     // const templatePath = path.resolve(process.cwd(), templateName);
     // await move(templatePath, './');
 }
