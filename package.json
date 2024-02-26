@@ -1,31 +1,45 @@
 {
-  "name": "sun",
+  "name": "action-cli",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build": "tsc && tsc-alias",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "bin": "bin/entry",
+  "bin": {
+    "action": "/bin/src/index.js"
+  },
   "keywords": [
-    "Cli",
-    "sun",
+    "cli",
+    "action-cli",
     "脚手架",
     "Vue",
     "React"
   ],
-  "author": "",
+  "author": {
+    "name": "Topskys",
+    "email": "loranbo@163.com",
+    "url": "https://github.com/Topskys"
+  },
   "license": "ISC",
   "dependencies": {
     "axios": "^1.6.7",
     "chalk": "^4.0.0",
-    "commander": "^9.0.0",
+    "commander": "^12.0.0",
     "download-git-repo": "^3.0.2",
-    "figlet": "^1.5.2",
-    "fs-extra": "^10.0.1",
+    "figlet": "^1.7.0",
+    "fs-extra": "^11.2.0",
     "gitee-repo": "^0.0.2",
     "inquirer": "^8.2.1",
     "nebula-cli-frontend": "^1.0.3",
-    "ora": "^5.4.1"
+    "ora": "^5.0.0"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.4",
+    "@types/inquirer": "^8.2.1",
+    "@types/node": "^20.11.20",
+    "tsc-alias": "^1.8.8",
+    "typescript": "^5.3.3"
   }
 }

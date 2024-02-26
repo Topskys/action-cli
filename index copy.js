@@ -4,6 +4,7 @@ const Inquirer = require("inquirer"); // 命令行交互
 const figlet = require("figlet"); // 命令行艺术
 
 
+
 program.name("sun").usage(`<command>[option]`).version("1.0.0");
 // console.log(`${chalk.green.underline.bold("Hello, sun!")} me`);
 

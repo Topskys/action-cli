@@ -36,10 +36,34 @@ npm i download-git-repo@3.0.2
 npm i handlebars@4.7.6
 # 安装fs-extra模块，该模块用于对文件系统进行更强大的操作。
 npm i fs-extra@10.0.1
-# 安装log-symbols模块，该模块用于在控制台输出不同类型的日志符号。
+# 安装log-symbols模块，该模块用于在控制台输出不同类型的日志符号（√或×）。
 npm i log-symbols@4.1.0
 # 安装axios模块，该模块用于发起HTTP请求。
 npm i axios@0.26.1
 # 安装gitee-repo模块，该模块用于从Gitee仓库中下载模板文件。
 npm i gitee-repo@0.0.2
 ```
+
+为什么需要脚手架?
+- 减少重复性的工作，不再需要复制其他项目再删除无关代码，或者从零创建一个项目和文件。
+- 根据交互动态生成项目结构和配置文件等。
+- 多人协作更为方便,不需要把文件传来传去。
+
+
+1. itcast --help查看使用帮助
+2. itcast -v|--version查看工具的版本号
+3. itcast list列出所有可用模板
+4. itcast init <template-name><project-name〉基于指定的模板进行项目初始化
+
+
+```bash
+pnpm i typescript @types/node -D
+
+pnpm i axios chalk commander download-git-repo figlet fs-extra gitee-repo inquirer nebula-cli-frontend ora
+```
+
+
+参考：
+
+[【前端脚手架】实现一个自己的脚手架](https://www.bilibili.com/video/BV1PB4y1j7DY/?p=7&share_source=copy_web&vd_source=d50c6b3216dda73ea5961ad06d492fa2)
+

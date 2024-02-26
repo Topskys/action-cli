@@ -1,0 +1,30 @@
+[
+    {
+        "key": "vue2",
+        "value": "https://github.com/PanJiaChen/vue-element-admin"
+    },
+    {
+        "key": "vue3",
+        "value": "https://github.com/PanJiaChen/vue-element-admin"
+    },
+    {
+        "key": "nestjs",
+        "value": "https://github.com/PanJiaChen/vue-element-admin"
+    },
+    {
+        "key": "react",
+        "value": "https://github.com/PanJiaChen/vue-element-admin"
+    },
+    {
+        "key": "vite+react+ts",
+        "value": "https://github.com/PanJiaChen/vue-element-admin"
+    },
+    {
+        "key": "vite+vue+ts",
+        "value": "https://github.com/PanJiaChen/vue-element-admin"
+    },
+    {
+        "key": "Inquirer",
+        "value": "https://github.com/SBoudrias/Inquirer.js"
+    }
+]
