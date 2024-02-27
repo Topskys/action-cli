@@ -1,4 +1,5 @@
 #! /usr/bin/env node
+
 import { Command } from 'commander';
 import * as pack from '../package.json';
 import commands from '@/commands';

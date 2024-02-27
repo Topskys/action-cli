@@ -30,6 +30,7 @@
     "download-git-repo": "^3.0.2",
     "figlet": "^1.7.0",
     "fs-extra": "^11.2.0",
+    "git-clone": "^0.2.0",
     "gitee-repo": "^0.0.2",
     "inquirer": "^8.2.1",
     "nebula-cli-frontend": "^1.0.3",
@@ -38,6 +39,7 @@
   "devDependencies": {
     "@types/figlet": "^1.5.8",
     "@types/fs-extra": "^11.0.4",
+    "@types/git-clone": "^0.2.3",
     "@types/inquirer": "^8.2.1",
     "@types/node": "^20.11.20",
     "tsc-alias": "^1.8.8",

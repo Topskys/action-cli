@@ -23,6 +23,9 @@ dependencies:
   fs-extra:
     specifier: ^11.2.0
     version: 11.2.0
+  git-clone:
+    specifier: ^0.2.0
+    version: 0.2.0
   gitee-repo:
     specifier: ^0.0.2
     version: 0.0.2
@@ -43,6 +46,9 @@ devDependencies:
   '@types/fs-extra':
     specifier: ^11.0.4
     version: 11.0.4
+  '@types/git-clone':
+    specifier: ^0.2.3
+    version: 0.2.3
   '@types/inquirer':
     specifier: ^8.2.1
     version: 8.2.10
@@ -93,6 +99,10 @@ packages:
     dependencies:
       '@types/jsonfile': 6.1.4
       '@types/node': 20.11.20
+    dev: true
+
+  /@types/git-clone@0.2.3:
+    resolution: {integrity: sha512-sOOrS5MAGFHhWaygv9bNpRWrYED7ZYdjHRVeAKAPbv5YZicLQY+aHApCaL2/AckG05RlFGW6x8JUThlxGnahfw==}
     dev: true
 
   /@types/inquirer@8.2.10:
@@ -706,6 +716,10 @@ packages:
 
   /git-clone@0.1.0:
     resolution: {integrity: sha512-zs9rlfa7HyaJAKG9o+V7C6qfMzyc+tb1IIXdUFcOBcR1U7siKy/uPdauLlrH1mc0vOgUwIv4BF+QxPiiTYz3Rw==}
+    dev: false
+
+  /git-clone@0.2.0:
+    resolution: {integrity: sha512-1UAkEPIFbyjHaddljUKvPhhLRnrKaImT71T7rdvSvWLXw95nLdhdi6Qmlx0KOWoV1qqvHGLq5lMLJEZM0JXk8A==}
     dev: false
 
   /gitee-repo@0.0.2:

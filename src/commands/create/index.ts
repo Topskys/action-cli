@@ -1,3 +1,4 @@
+import ora from "ora";
 import * as path from 'path';
 import * as fs from 'fs-extra';
 import inquirer from 'inquirer';
@@ -6,47 +7,39 @@ import { exec } from 'child_process';
 import { remove, mkdir, readDir, readFile, move } from '@/utils/file';
 import { TARGET_DIR_EXISTS_MSG, URL_REG } from '@/utils/constant';
 import { getTemplates } from '@/api';
+import gitClone from 'git-clone';
+import chalk from "chalk";
 
 /**
  * create命令附加参数处理函数
  */
 export default async (projectName: string, options) => {
-    const targetDir = path.join(process.cwd(), projectName); // 获取目标目录
-    const exists = fs.existsSync(targetDir);
-
+    const targetDir = path.join(process.cwd(), projectName);
     try {
-        if (exists) {
-            if (options.force) {
-                await remove(targetDir);
-            } else {
-                // 询问用户是否要覆盖重名目录
-                const questions = [
-                    {
-                        name: "isOverwrite", // 与返回值对应
-                        type: "list", // list 类型
-                        message: TARGET_DIR_EXISTS_MSG,
-                        choices: [
-                            { name: "Overwrite", value: true },
-                            { name: "Cancel", value: false },
-                        ],
-                    },
-                ]
-                const { isOverwrite } = await inquirer.prompt(questions);
-                if (!isOverwrite) {
-                    console.log("Cancel");
-                    return;
-                } else {
-                    await loading(`Removing ${projectName}...`, fs.remove, targetDir);
+        if (fs.existsSync(targetDir)) {
+            const questions = [
+                {
+                    type: 'confirm',
+                    name: 'overwrite',
+                    default: false,
+                    message: `Target directory ${chalk.cyanBright(targetDir)} already exists. Is overwrote?`,
                 }
+            ];
+            const answer = await inquirer.prompt(questions);
+            if (answer.overwrite) {
+                const spinner = ora(`Removing ${projectName}...`);
+                spinner.start();
+                await fs.remove(targetDir);
+                spinner.succeed(`Removed ${projectName} Successfully.`);
+            } else {
+                // 退出
+                return;
             }
         }
-        // 创建项目目录
-        await mkdir(targetDir);
-        // 下载模板
-        await downloadTemplate(options.templateName);
-    } catch (err) {
-        console.log(JSON.stringify(err));
-        process.abort();
+        await clone(projectName, targetDir);
+    } catch (e) {
+        console.log(`Error：${typeof e == 'string' ? e : JSON.stringify(e)}`);
+        process.exit();
     }
 }
 
@@ -82,6 +75,63 @@ export async function downloadTemplate(templateName?: string) {
 }
 
 
-const gitClone = () => {
+/**
+ * 克隆模板初始化项目
+ * @param projectName 项目名
+ * @param targetDir 项目目录
+ */
+const clone = async (projectName: string, targetDir: string) => {
+    const questions = [
+        {
+            type: 'list',
+            name: 'framework',
+            message: 'Select a framework：', // Please choose a template to create project
+            choices: [
+                { name: 'vue2', value: 'vue2' },
+                { name: 'vue3', value: 'vue3' },
+                { name: 'react', value: 'react' },
+                { name: 'nest', value: 'nest' }
+            ],
+        },
+        {
+            type: 'list',
+            name: 'ts',
+            message: 'Use TypeScript?',
+            choices: [
+                {
+                    name: 'Yes',
+                    value: true
+                },
+                {
+                    name: 'No',
+                    value: false
+                }
+            ]
+        }
+    ];
 
+    const answers = await inquirer.prompt(questions);
+    const key = answers.framework + (answers.ts ? '&ts' : '');
+    const projects = {
+        'vue2': 'https://github.com/PanJiaChen/vue-element-admin',
+        'vue3': 'https://github.com/PanJiaChen/vue-element-admin',
+        'react': 'https://github.com/PanJiaChen/vue-element-admin',
+        'react&ts': 'https://github.com/PanJiaChen/vue-element-admin',
+        'vue2&ts': 'https://github.com/PanJiaChen/vue-element-admin',
+        'vue3&ts': 'https://github.com/PanJiaChen/vue-element-admin',
+    }
+
+    const spinner = ora(`Clone ${projects[key]}...`);
+    spinner.start();
+    gitClone(projects[key], targetDir, { checkout: 'main' }, async function (err) {
+        if (err && JSON.stringify(err) !== '{}') {
+            spinner.fail(chalk.red(`Clone ${projects[key]} failed.`));
+            console.log(`Error：${typeof err == 'string' ? err : JSON.stringify(err)}`);
+            process.exit();
+        } else {
+            spinner.succeed(`Initialization ${projectName} successfully.Now run:\n` + chalk.cyan(`  cd ${projectName}\n  npm install\n  npm run dev`));
+            await fs.remove(path.join(targetDir, '.git'));
+            process.exit();
+        }
+    });
 }
