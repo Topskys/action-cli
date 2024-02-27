@@ -6,4 +6,7 @@ import { getTemplates } from "@/api"
 export default async () => {
     const templates: any = await getTemplates();
     console.log(templates);
+    for(let key in templates){
+        console.log(`${key}`);
+    }
 }

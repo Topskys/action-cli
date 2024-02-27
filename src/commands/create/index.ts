@@ -10,7 +10,7 @@ import { getTemplates } from '@/api';
 /**
  * create命令附加参数处理函数
  */
-export default async (projectName:string, options) => {
+export default async (projectName: string, options) => {
     const targetDir = path.join(process.cwd(), projectName); // 获取目标目录
     const exists = fs.existsSync(targetDir);
 
@@ -79,4 +79,9 @@ export async function downloadTemplate(templateName?: string) {
     }
     // const templatePath = path.resolve(process.cwd(), templateName);
     // await move(templatePath, './');
+}
+
+
+const gitClone = () => {
+
 }
