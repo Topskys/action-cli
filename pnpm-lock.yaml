@@ -37,6 +37,9 @@ dependencies:
     version: 5.4.1
 
 devDependencies:
+  '@types/figlet':
+    specifier: ^1.5.8
+    version: 1.5.8
   '@types/fs-extra':
     specifier: ^11.0.4
     version: 11.0.4
@@ -80,6 +83,10 @@ packages:
     resolution: {integrity: sha512-ONhaKPIufzzrlNbqtWFFd+jlnemX6lJAgq9ZeiZtS7I1PIf/la7CW4m83rTXRnVnsMbW2k56pGYu7AUFJD9Pow==}
     engines: {node: '>=4'}
     dev: false
+
+  /@types/figlet@1.5.8:
+    resolution: {integrity: sha512-G22AUvy4Tl95XLE7jmUM8s8mKcoz+Hr+Xm9W90gJsppJq9f9tHvOGkrpn4gRX0q/cLtBdNkWtWCKDg2UDZoZvQ==}
+    dev: true
 
   /@types/fs-extra@11.0.4:
     resolution: {integrity: sha512-yTbItCNreRooED33qjunPthRcSjERP1r4MqCZc7wv0u2sUkzTFp45tgUfS5+r7FrZPdmCCNflLhVSP/o+SemsQ==}

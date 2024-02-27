@@ -10,7 +10,7 @@ import { getTemplates } from '@/api';
 /**
  * create命令附加参数处理函数
  */
-export default async (projectName, options) => {
+export default async (projectName:string, options) => {
     const targetDir = path.join(process.cwd(), projectName); // 获取目标目录
     const exists = fs.existsSync(targetDir);
 
@@ -20,7 +20,7 @@ export default async (projectName, options) => {
                 await remove(targetDir);
             } else {
                 // 询问用户是否要覆盖重名目录
-                const { isOverwrite } = await inquirer.prompt([
+                const questions = [
                     {
                         name: "isOverwrite", // 与返回值对应
                         type: "list", // list 类型
@@ -30,12 +30,13 @@ export default async (projectName, options) => {
                             { name: "Cancel", value: false },
                         ],
                     },
-                ]);
+                ]
+                const { isOverwrite } = await inquirer.prompt(questions);
                 if (!isOverwrite) {
                     console.log("Cancel");
                     return;
                 } else {
-                    await loading(`Removing ${projectName}, please wait a minute`, fs.remove, targetDir);
+                    await loading(`Removing ${projectName}...`, fs.remove, targetDir);
                 }
             }
         }
