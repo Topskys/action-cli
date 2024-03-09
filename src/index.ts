@@ -1,11 +1,9 @@
 #! /usr/bin/env node
-
 import { Command } from 'commander';
 import * as pack from '../package.json';
 import commands from '@/commands';
 import figlet from 'figlet';
 import chalk from 'chalk';
-
 
 const program = new Command();
 const name = Object.keys(pack.bin)[0];
@@ -33,5 +31,4 @@ program.on("--help", (...args: any[]) => {
     })}\nRun ${chalk.cyan(name + ' <command> --help')} for detailed usage of given command.`);
 });
 
-
-program.parse(); // 解析命令
+program.parse();

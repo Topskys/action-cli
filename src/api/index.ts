@@ -15,10 +15,4 @@ const service = (url: string | URL | Request, options?: RequestInit): Promise<Re
     });
 }
 
-/**
- * 获取模板
- */
-export const getTemplates = () => service('/data');
-
-
 export default service;

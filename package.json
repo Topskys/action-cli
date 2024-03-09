@@ -15,7 +15,8 @@
     "action-cli",
     "脚手架",
     "Vue",
-    "React"
+    "React",
+    "Nestjs"
   ],
   "author": {
     "name": "Topskys",
