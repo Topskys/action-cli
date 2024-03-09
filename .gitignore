@@ -24,6 +24,3 @@ dist-ssr
 *.sw?
 
 # build
-bin
-
-demo

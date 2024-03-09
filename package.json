@@ -1,7 +1,7 @@
 {
   "name": "action-cli",
   "version": "1.0.0",
-  "description": "",
+  "description": "Action-cli is a CLI focused on powering the start of developer's web  project.",
   "main": "index.js",
   "scripts": {
     "build": "tsc && tsc-alias",
@@ -12,16 +12,27 @@
   },
   "keywords": [
     "cli",
+    "action",
     "action-cli",
     "脚手架",
     "Vue",
     "React",
-    "Nestjs"
+    "Nestjs",
+    "frontend",
+    "backend",
+    "fullstack",
+    "typescript",
+    "javascript",
+    "nodejs"
   ],
   "author": {
     "name": "Topskys",
     "email": "loranbo@163.com",
-    "url": "https://github.com/Topskys"
+    "url": "https://github.com/Topskys/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Topskys/action-cli.git"
   },
   "license": "ISC",
   "dependencies": {
@@ -34,7 +45,6 @@
     "git-clone": "^0.2.0",
     "gitee-repo": "^0.0.2",
     "inquirer": "^8.2.1",
-    "nebula-cli-frontend": "^1.0.3",
     "ora": "^5.0.0"
   },
   "devDependencies": {
