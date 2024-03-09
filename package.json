@@ -1,6 +1,6 @@
 {
   "name": "action-cli",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Action-cli is a CLI focused on powering the start of developer's web  project.",
   "main": "index.js",
   "scripts": {

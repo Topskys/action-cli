@@ -8,16 +8,16 @@ Action-cli is a CLI focused on powering the start of developer's web  project.
 
 | command	| description	| option	| description |
 | ------------ | ------------ | ------------ | ------------ |
-| create <project-name> | Create a project | 	-f，--force	|Overwrite target directory if it exists|
+| create \<project-name> | Create a project | 	-f，--force	|Overwrite target directory if it exists|
 |    |  |--template <template-name>	| template or git-url（string）|
-|list |	List available templates |	-	| - |
-|add <template-name> <template-url>|	Add a new template	| - |	- |
-| remove <template-name> | Remove an existing template	| - |	- |
-|ui	| Open the web-based UI |	-p, --port [port]	|Specify port (number)|
+| list |	List available templates |	-	| - |
+| add \<template-name> \<template-url> |	Add a new template	| - |	- |
+| remove \<template-name> | Remove an existing template	| - |	- |
+| ui	| Open the web-based UI |	-p, --port [port]	|Specify port (number)|
 |-| -|-h, --host [host]	| Specify hostname (string)|
 |-	|-|	-V，--version	|Display version number|
 |-|-|-h，--help	|Display available CLI options|
-|help [command]	|Display help for command|	--help	|Display help for command|
+| help [command]	|Display help for command|	--help	|Display help for command|
 | ...|	-|	-|	-|
 
 
