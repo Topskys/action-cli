@@ -62,6 +62,12 @@ pnpm i typescript @types/node -D
 pnpm i axios chalk commander download-git-repo figlet fs-extra gitee-repo inquirer nebula-cli-frontend ora
 ```
 
+## NPM发包
+```sh
+npm login
+npm publish
+```
+
 
 参考：
 

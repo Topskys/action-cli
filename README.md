@@ -1,6 +1,6 @@
 # Action-cli
-[![NPM](https://img.shields.io/badge/NPM-%23CB3837.svg?style=for-the-badge&logo=npm&logoColor=white)](https://www.npmjs.com/package/nuke-cli)
-[![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/cl4pper/nuke-cli)
+[![NPM](https://img.shields.io/badge/NPM-%23CB3837.svg?style=for-the-badge&logo=npm&logoColor=white)](https://github.com/Topskys/action-cli)
+[![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Topskys/action-cli)
 
 Action-cli is a CLI focused on powering the start of developer's web  project.
 
@@ -70,6 +70,16 @@ pnpm link
 action create demo
 ```
 
+## NPM
+```sh
+# login（https://registry.npmjs.org/） 
+npm login
+# publish
+npm publish
+```
+
+## Blog
+[CSDN](https://blog.csdn.net/qq_58062502)
 
 ## Git 提交规范参考
 
