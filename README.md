@@ -52,7 +52,9 @@ action help
 # ...
 ```
 ## Pictures
-[]()
+![Action-cli](https://github.com/Topskys/action-cli/blob/main/src/static/50f1ea3e69c84525889ff872e6aa07ad.png)
+
+![Example](https://github.com/Topskys/action-cli/blob/main/src/static/f1ad8257d7db42019781cd69e0660c8a.png)
 
 
 ## Run
