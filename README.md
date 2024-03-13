@@ -57,7 +57,7 @@ action help
 ![Example](https://github.com/Topskys/action-cli/blob/main/src/static/f1ad8257d7db42019781cd69e0660c8a.png)
 
 
-## Run
+## 🛠️ Run
 Development
 ```sh
 # install dependencies
