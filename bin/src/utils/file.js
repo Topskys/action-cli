@@ -1,10 +1,33 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.move = exports.readFile = exports.remove = exports.mkdir = exports.readDir = void 0;
-var fs_extra_1 = __importDefault(require("fs-extra"));
+var fs = __importStar(require("fs-extra"));
 var chalk_1 = __importDefault(require("chalk"));
 /**
  * 检查项目是否已经存在
@@ -13,7 +36,7 @@ var chalk_1 = __importDefault(require("chalk"));
  */
 var readDir = function (path) {
     return new Promise(function (resolve, reject) {
-        fs_extra_1.default.readdir(path, function (err, files) {
+        fs.readdir(path, function (err, files) {
             if (!err)
                 resolve('');
             reject("".concat(chalk_1.default.red('Note exists dir'), " ").concat(typeof err === 'string' ? err : JSON.stringify(err)));
@@ -28,7 +51,7 @@ exports.readDir = readDir;
  */
 var mkdir = function (path) {
     return new Promise(function (resolve, reject) {
-        fs_extra_1.default.mkdir(path, function (err) {
+        fs.mkdir(path, function (err) {
             if (!err)
                 resolve('');
             reject("".concat(chalk_1.default.red('Can not make dir'), " ").concat(typeof err === 'string' ? err : JSON.stringify(err)));
@@ -43,7 +66,7 @@ exports.mkdir = mkdir;
  */
 var remove = function (path) {
     return new Promise(function (resolve, reject) {
-        fs_extra_1.default.rmdir(path, function (err) {
+        fs.rmdir(path, function (err) {
             if (!err)
                 resolve('');
             reject("".concat(chalk_1.default.red('Can not remove dir'), " ").concat(typeof err === 'string' ? err : JSON.stringify(err)));
@@ -58,7 +81,7 @@ exports.remove = remove;
  */
 var readFile = function (path) {
     return new Promise(function (resolve, reject) {
-        fs_extra_1.default.readFile(path, { encoding: 'utf-8' }, function (err, data) {
+        fs.readFile(path, { encoding: 'utf-8' }, function (err, data) {
             if (!err)
                 resolve(data);
             reject(chalk_1.default.red("Can not read ".concat(path, " \n ").concat(typeof err === 'string' ? err : JSON.stringify(err))));
@@ -74,7 +97,7 @@ exports.readFile = readFile;
  */
 var move = function (oldPath, newPath) {
     return new Promise(function (resolve, reject) {
-        fs_extra_1.default.rename(oldPath, newPath, function (err) {
+        fs.rename(oldPath, newPath, function (err) {
             if (!err)
                 resolve('');
             reject("".concat(chalk_1.default.red('Can not rename'), " \n ").concat(typeof err === 'string' ? err : JSON.stringify(err)));

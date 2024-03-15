@@ -4,6 +4,7 @@ import * as path from 'path';
 import * as fs from 'fs-extra';
 import inquirer from 'inquirer';
 import gitClone from 'git-clone';
+import { readFile } from "@/utils/file";
 
 /**
  * create命令附加参数处理函数
@@ -50,7 +51,8 @@ export default async (projectName: string, options) => {
  */
 const downloadTemplate = async (projectName: string, targetDir: string, options) => {
     const { template } = options;
-    const templates = JSON.parse(fs.readFileSync('template.json', { encoding: 'utf-8' }));
+    const templatePath = path.resolve(__dirname, '../../../template.json');
+    const templates = JSON.parse(fs.readFileSync(templatePath, { encoding: 'utf-8' }));
     const HTTP_REG = /^(((ht|f)tps?):\/\/)?([^!@#$%^&*?.\s-]([^!@#$%^&*?.\s]{0,63}[^!@#$%^&*?.\s])?\.)+[a-z]{2,6}\/?/;
     if (template) {
         if (HTTP_REG.test(template)) {

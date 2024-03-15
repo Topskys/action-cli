@@ -1,15 +1,18 @@
 import ora from "ora";
+import path from 'path';
 import * as fs from 'fs-extra';
+
+const templatePath = path.resolve(__dirname, '../../../template.json');
 
 /**
  * add命令处理函数
  */
-export const addAction = (templateName: string, templateUrl: string, options) => {
+export const addAction = async (templateName: string, templateUrl: string, options) => {
     const spinner = ora('Updating template...');
     spinner.start();
-    const templates = JSON.parse(fs.readFileSync('template.json', { encoding: 'utf-8' }));
+    const templates = JSON.parse(fs.readFileSync(templatePath, { encoding: 'utf-8' }));
     templates[templateName.trim()] = templateUrl.trim();
-    fs.writeFileSync('template.json', JSON.stringify(templates, null, 2));
+    await fs.outputFile(templatePath, JSON.stringify(templates, null, 2));
     spinner.succeed('Updated successfully!');
     process.exit();
 }
@@ -17,13 +20,13 @@ export const addAction = (templateName: string, templateUrl: string, options) =>
 /**
  * remove命令处理函数
  */
-export const removeAction = (templateName: string, options) => {
+export const removeAction = async (templateName: string, options) => {
     const spinner = ora('Removing template...');
     spinner.start();
-    const templates = JSON.parse(fs.readFileSync('template.json', { encoding: 'utf-8' }));
+    const templates = JSON.parse(fs.readFileSync(templatePath, { encoding: 'utf-8' }));
     if (templates[templateName.trim()]) {
         delete templates[templateName.trim()];
-        fs.writeFileSync('template.json', JSON.stringify(templates, null, 2));
+        await fs.outputFile(templatePath, JSON.stringify(templates, null, 2));
     }
     spinner.succeed('Removed successfully!');
     process.exit();

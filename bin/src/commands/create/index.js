@@ -141,12 +141,13 @@ exports.default = (function (projectName, options) { return __awaiter(void 0, vo
  * @param targetDir 项目目录
  */
 var downloadTemplate = function (projectName, targetDir, options) { return __awaiter(void 0, void 0, void 0, function () {
-    var template, templates, HTTP_REG;
+    var template, templatePath, templates, HTTP_REG;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 template = options.template;
-                templates = JSON.parse(fs.readFileSync('template.json', { encoding: 'utf-8' }));
+                templatePath = path.resolve(__dirname, '../../../template.json');
+                templates = JSON.parse(fs.readFileSync(templatePath, { encoding: 'utf-8' }));
                 HTTP_REG = /^(((ht|f)tps?):\/\/)?([^!@#$%^&*?.\s-]([^!@#$%^&*?.\s]{0,63}[^!@#$%^&*?.\s])?\.)+[a-z]{2,6}\/?/;
                 if (template) {
                     if (HTTP_REG.test(template)) {
