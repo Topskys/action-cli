@@ -1,9 +1,9 @@
-#! /usr/bin/env node
 import { Command } from 'commander';
 import * as pkg from '../package.json';
 import commands from '@/commands';
 import figlet from 'figlet';
 import chalk from 'chalk';
+import { checkVersion } from './utils';
 
 const program = new Command();
 const name = Object.keys(pkg.bin)[0];
@@ -30,5 +30,7 @@ program.on("--help", (...args) => {
         whitespaceBreak: true,
     })}\nRun ${chalk.cyan(name + ' <command> --help')} for detailed usage of given command.`);
 });
+
+checkVersion(pkg.name, pkg.version);
 
 program.parse();

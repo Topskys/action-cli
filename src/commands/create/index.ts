@@ -43,6 +43,8 @@ export default async (projectName: string, options) => {
     }
 }
 
+function overwrite(){}
+
 /**
  * 克隆模板初始化项目
  * @param projectName 项目名
