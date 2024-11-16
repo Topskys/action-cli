@@ -3,8 +3,7 @@ import chalk from "chalk";
 import * as path from 'path';
 import * as fs from 'fs-extra';
 import inquirer from 'inquirer';
-import gitClone from 'git-clone';
-import { readFile } from "@/utils/file";
+import { clone } from "@/utils";
 
 /**
  * create命令附加参数处理函数
@@ -68,25 +67,7 @@ const downloadTemplate = async (projectName: string, targetDir: string, options)
     await handleSelect(projectName, targetDir, templates);
 }
 
-/**
- * 克隆
- * @param targetDir 工作目录
- * @param projectName 项目名称
- * @param url git仓库地址
- */
-const clone = (projectName: string, targetDir: string, url: string) => {
-    const spinner = ora(`Cloning ${url}...`);
-    spinner.start();
-    gitClone(url, targetDir, { checkout: 'main' }, async function (err) {
-        if (!err) {
-            spinner.succeed(`Initialization ${projectName} successfully. Now run:\n` + chalk.cyan(`  cd ${projectName}\n  npm install\n  npm run dev`));
-            await fs.remove(path.join(targetDir, '.git'));
-            process.exit();
-        }
-        spinner.fail(chalk.red(`Clone ${url} failed. ${typeof err == 'string' ? err : JSON.stringify(err)}`));
-        process.exit();
-    });
-}
+
 
 /**
  * 克隆

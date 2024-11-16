@@ -1,14 +1,14 @@
 #! /usr/bin/env node
 import { Command } from 'commander';
-import * as pack from '../package.json';
+import * as pkg from '../package.json';
 import commands from '@/commands';
 import figlet from 'figlet';
 import chalk from 'chalk';
 
 const program = new Command();
-const name = Object.keys(pack.bin)[0];
+const name = Object.keys(pkg.bin)[0];
 
-program.name(name).usage(`<command> [option]`).helpOption('-h,--help').version(`${pack.name} ${pack.version}`);
+program.name(name).usage(`<command> [option]`).helpOption('-h,--help').version(`${pkg.name} ${pkg.version}`);
 
 Object.keys(commands).forEach(command => {
     const current = program.command(command);
@@ -21,7 +21,7 @@ Object.keys(commands).forEach(command => {
     current.description(commands[command].description);
 });
 
-program.on("--help", (...args: any[]) => {
+program.on("--help", (...args) => {
     console.log(`\r\n${figlet.textSync("Action-cli", {
         font: "3D-ASCII",
         horizontalLayout: "default",

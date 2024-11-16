@@ -1,4 +1,8 @@
 import ora from "ora";
+import chalk from "chalk";
+import * as path from 'path';
+import * as fs from 'fs-extra';
+import gitClone from 'git-clone';
 
 
 /**
@@ -23,4 +27,24 @@ export async function loading(message = 'loading...', cb: Function, ...args: any
         });
         return loading(message, cb, ...args);
     }
+}
+
+/**
+ * 克隆
+ * @param targetDir 工作目录
+ * @param projectName 项目名称
+ * @param url git仓库地址
+ */
+export const clone = (projectName: string, targetDir: string, url: string) => {
+    const spinner = ora(`Cloning ${url}...`);
+    spinner.start();
+    gitClone(url, targetDir, { checkout: 'main' }, async function (err) {
+        if (!err) {
+            spinner.succeed(`Initialization ${projectName} successfully. Now run:\n` + chalk.cyan(`  cd ${projectName}\n  npm install\n  npm run dev`));
+            await fs.remove(path.join(targetDir, '.git'));
+            process.exit();
+        }
+        spinner.fail(chalk.red(`Clone ${url} failed. ${typeof err == 'string' ? err : JSON.stringify(err)}`));
+        process.exit();
+    });
 }
