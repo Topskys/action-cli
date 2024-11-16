@@ -4,29 +4,27 @@
   "description": "Action-cli is a CLI focused on powering the start of developer's web  project.",
   "main": "index.js",
   "scripts": {
-    "build": "tsc && tsc-alias",
+    "build": "rollup -c rollup.config.js",
+    "build:tsc": "tsc && tsc-alias",
     "lint": "tslint ./src/**/*.ts --fix",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "bin": {
-    "action": "/bin/src/index.js"
+    "action": "./bin/index.js"
   },
   "files": [
-    "bin"
+    "bin",
+    "dist",
+    "README.md"
   ],
   "keywords": [
     "cli",
-    "action",
     "action-cli",
-    "脚手架",
     "vue",
     "react",
     "nestjs",
-    "frontend",
-    "backend",
     "fullstack",
     "typescript",
-    "javascript",
     "nodejs"
   ],
   "author": {
