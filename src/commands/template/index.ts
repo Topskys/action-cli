@@ -2,7 +2,7 @@ import ora from "ora";
 import path from 'path';
 import * as fs from 'fs-extra';
 
-const templatePath = path.resolve(__dirname, '../../../template.json');
+const templatePath = path.resolve(__dirname, '../../templates.json');
 
 /**
  * add命令处理函数

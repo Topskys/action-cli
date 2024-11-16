@@ -51,7 +51,7 @@ export default async (projectName: string, options) => {
  */
 const downloadTemplate = async (projectName: string, targetDir: string, options) => {
     const { template } = options;
-    const templatePath = path.resolve(__dirname, '../../../template.json');
+    const templatePath = path.resolve(__dirname, '../../templates.json');
     const templates = JSON.parse(fs.readFileSync(templatePath, { encoding: 'utf-8' }));
     const HTTP_REG = /^(((ht|f)tps?):\/\/)?([^!@#$%^&*?.\s-]([^!@#$%^&*?.\s]{0,63}[^!@#$%^&*?.\s])?\.)+[a-z]{2,6}\/?/;
     if (template) {
@@ -124,6 +124,6 @@ const handleSelect = async (projectName: string, targetDir: string, templates: a
         }
     ];
     const answers = await inquirer.prompt(questions);
-    const key = answers.framework + (answers.ts ? '+ts' : '');
+    const key = answers.framework + (answers.ts ? '-ts' : '');
     clone(projectName, targetDir, templates[key]);
 }
