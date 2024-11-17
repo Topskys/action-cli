@@ -2,7 +2,13 @@ import chalk from "chalk";
 import * as path from "path";
 import * as fs from "fs-extra";
 import inquirer from "inquirer";
-import { getDefaultBranch, gitClone, loading, readTemplates } from "@/utils";
+import {
+  getDefaultBranch,
+  gitClone,
+  isPackageManger,
+  loading,
+  readTemplates,
+} from "@/utils";
 import { HTTP_URL_REGEX } from "@/utils/constants";
 import { CreateOptions, TemplateInfo } from "@/utils/types";
 import { execSync } from "child_process";
@@ -197,11 +203,11 @@ async function autoRun(
  */
 function handleAutoRun(
   projectDir: string,
-  packageManager = "pnpm",
+  packageManager?: string,
   cmd?: string
 ) {
-  const command =
-    cmd || `${packageManager} install && ${packageManager} run dev`;
+  const pm = isPackageManger(packageManager);
+  const command = cmd || `${pm} install && ${pm} run dev`;
   try {
     // 执行命令，继承stdio以直接在控制台显示输出
     execSync(command, { cwd: projectDir, stdio: "inherit" });

@@ -3,7 +3,7 @@ import chalk from "chalk";
 import * as path from "path";
 import * as fs from "fs-extra";
 import axios from "axios";
-import { HTTP_URL_REGEX, NPM_URL } from "./constants";
+import { HTTP_URL_REGEX, NPM_URL, PACKAGE_MANAGER } from "./constants";
 import { LoadingOptions, TemplateInfo } from "./types";
 import simpleGit, { SimpleGit, SimpleGitOptions } from "simple-git";
 import ProgressEstimator, { LogOption } from "progress-estimator";
@@ -195,8 +195,20 @@ export async function gitClone(
  * 获取仓库的默认分支名
  *
  * @param url 仓库的URL
+ * @param defBranch 仓库默认分支 main
  * @returns 默认分支名
  */
-export function getDefaultBranch(url: string) {
-  return url.includes("gitee.com") ? "master" : "main";
+export function getDefaultBranch(url: string, defBranch = "main") {
+  return url.includes("gitee.com") ? "master" : defBranch;
+}
+
+/**
+ * 判断传入的包管理器名称是否为有效的包管理器名称，如果不是则返回默认包管理器名称
+ *
+ * @param name 待判断的包管理器名称
+ * @param pm 默认包管理器名称，默认为 "pnpm"
+ * @returns 如果传入的包管理器名称有效，则返回该名称；否则返回默认包管理器名称
+ */
+export function isPackageManger(name: string, pm = "pnpm") {
+  return PACKAGE_MANAGER.includes(name) ? name : pm;
 }

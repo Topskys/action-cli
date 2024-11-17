@@ -25,7 +25,7 @@ const commands = {
         msg: "run the project after creation",
       },
       {
-        cmd: "-p,--packageManager [package-manager]",
+        cmd: "-pm,--packageManager [package-manager]",
         msg: "specify a package manager to use",
       },
     ],
@@ -61,8 +61,8 @@ const commands = {
     description: "Update the cli to the latest version",
     options: [
       {
-        cmd: "-t, --tool [tool]",
-        msg: "specify the tool to run",
+        cmd: "-pm, --packageManager [package-manager]",
+        msg: "specify a package manager to use",
       },
     ],
     action: updateAction,
