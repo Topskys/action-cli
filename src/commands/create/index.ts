@@ -59,7 +59,7 @@ async function overwrite(projectName: string, force?: boolean) {
       },
     ];
     const answer = await inquirer.prompt(questions);
-    if (!answer.overwrite) return; // 终止
+    if (!answer.overwrite) process.exit(); // 终止进程
   }
   // 删除目录并返回项目路径，重新创建项目目录
   await fs.remove(targetDir);
