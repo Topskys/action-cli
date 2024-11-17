@@ -1,5 +1,3 @@
-import path from "path";
-
 // NPM地址
 export const NPM_URL = "https://registry.npmjs.org/";
 
