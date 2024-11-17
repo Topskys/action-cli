@@ -136,6 +136,21 @@ export function readTemplates() {
   });
 }
 
+/**
+ * 同步读取模板文件
+ *
+ * @returns 模板对象
+ */
+export function readTemplateSync() {
+  let templates: any = {};
+  try {
+    templates = fs.readJsonSync(path.join(__dirname, "..", "templates.json"));
+  } catch (e) {
+    console.error(chalk.redBright("Error: template is required\n"));
+  }
+  return templates;
+}
+
 const logger = ProgressEstimator();
 
 /**

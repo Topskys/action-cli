@@ -22,7 +22,7 @@ const commands = {
       },
       {
         cmd: "-r,--run",
-        msg: "run the project after creation", // 自动安装依赖并运行项目
+        msg: "run the project after creation",
       },
       {
         cmd: "-p,--packageManager [package-manager]",
@@ -40,7 +40,7 @@ const commands = {
     action: addAction,
   },
   "remove <template-name>": {
-    description: "remove an existing template",
+    description: "Remove an existing template",
     action: removeAction,
   },
   ui: {
