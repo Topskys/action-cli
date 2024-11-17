@@ -37,4 +37,6 @@ export type CreateOptions = {
   force?: boolean; // 是否强制覆盖
   template?: string; // 模板名称或URL地址
   branch?: string; // 下载分支名称
+  run?: boolean; // 是否自动运行
+  packageManager?: string; // 包管理器
 };

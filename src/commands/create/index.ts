@@ -5,29 +5,30 @@ import inquirer from "inquirer";
 import { getDefaultBranch, gitClone, loading, readTemplates } from "@/utils";
 import { HTTP_URL_REGEX } from "@/utils/constants";
 import { CreateOptions, TemplateInfo } from "@/utils/types";
+import { execSync } from "child_process";
 
 /**
- * 创建新项目的函数。
- *
+ * 创建一个新的项目。
+ * 
  * @param projectName 新项目的名称。
- * @param options 创建选项，包含以下字段：
- *  - force: 是否覆盖已存在的项目目录。
- *  - template: 要使用的模板名称。
- *  - branch: 要使用的模板分支。
- *
- * @returns 无返回值，函数为异步操作。
- *
- * @throws 当遇到错误时，会捕获异常并在控制台输出错误信息，然后退出进程。
+ * @param options 创建选项，包括：
+ *  - force: 是否强制覆盖已存在的项目目录。
+ *  - template: 用于创建新项目的模板。
+ *  - branch: 用于获取模板的分支。
+ *  - run: 创建项目后是否自动运行。
+ *  - packageManager: 用于运行项目的包管理器。
  */
 export default async (projectName: string, options: CreateOptions) => {
-  const { force, template, branch } = options;
+  const { force, template, branch, run, packageManager } = options;
   try {
     // 判断是否需要覆盖项目目录
-    await overwrite(projectName, force);
+    const projectDir = await overwrite(projectName, force);
     // 获取模板信息
     const templateInfo = await getTemplateInfo(template, branch);
     // 下载模板并创建项目目录
     await downloadTemplate(projectName, templateInfo);
+    // 自动运行项目
+    await autoRun(run, projectDir, packageManager);
   } catch (e) {
     console.error(`Creation failed, due to ${JSON.stringify(e)}`);
     process.exit();
@@ -87,7 +88,7 @@ async function getTemplateInfo(template?: string, branch?: string) {
   // 传入template是模板名称，但templates.json没有对应模板
   if (!templates[template]) {
     console.error(chalk.redBright(`${template} is not found`));
-    return;
+    process.exit(); // 终止进程
   }
   return generateTemplateInfo(template, templates[template], branch);
 }
@@ -147,4 +148,55 @@ async function downloadTemplate(
     failureText: chalk.red(`Initialization ${projectName} failed.\n`),
   };
   await loading(loadingOptions);
+}
+
+/**
+ * 自动运行项目
+ *
+ * @param run 是否自动运行项目，默认为 false
+ * @param projectDir 项目目录路径
+ * @param packageManager 包管理器
+ */
+async function autoRun(
+  run?: boolean,
+  projectDir?: string,
+  packageManager?: string
+) {
+  if (!run || !projectDir) return;
+  if (!fs.existsSync(projectDir)) {
+    console.error(chalk.red("Project directory not found."));
+    process.exit(); // 终止进程
+  }
+  // 如果没有传run，则询问是否自动运行
+  if (typeof run === "boolean" && !run) return;
+  if (run == null) {
+    const questions = [
+      {
+        type: "confirm",
+        name: "autoRun",
+        default: false,
+        message: `run the project automatically after initialization. Auto?`,
+      },
+    ];
+    const answer = await inquirer.prompt(questions);
+    if (!answer.autoRun) process.exit(); // 终止进程
+  }
+  // 自动运行项目
+  handleAutoRun(projectDir, packageManager);
+}
+
+/**
+ * 执行自动运行shell脚本
+ *
+ * @param projectDir 项目目录
+ * @param packageManager 包管理工具，默认为 "pnpm"
+ */
+function handleAutoRun(projectDir: string, packageManager = "pnpm") {
+  const command = `${packageManager} install && ${packageManager} run dev`;
+  try {
+    execSync(command, { cwd: projectDir });
+  } catch (e) {
+    console.error(chalk.red("Run the project failed.\n"));
+    return;
+  }
 }

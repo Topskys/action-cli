@@ -20,6 +20,14 @@ const commands = {
         cmd: "-b,--branch [branch-name]",
         msg: "specify a branch to clone",
       },
+      {
+        cmd: "-r,--run",
+        msg: "run the project after creation", // 自动安装依赖并运行项目
+      },
+      {
+        cmd: "-p,--packageManager [package-manager]",
+        msg: "specify a package manager to use",
+      },
     ],
     action: createAction,
   },
