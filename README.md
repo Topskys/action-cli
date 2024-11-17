@@ -5,7 +5,7 @@
 ![NPM Downloads](https://img.shields.io/npm/dy/action-cli)
 
 
-[![NPM](https://img.shields.io/badge/NPM-%23CB3837.svg?style=for-the-badge&logo=npm&logoColor=white)](https://github.com/Topskys/action-cli)
+[![NPM](https://img.shields.io/badge/NPM-%23CB3837.svg?style=for-the-badge&logo=npm&logoColor=white)](https://www.npmjs.com/package/action-cli)
 [![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Topskys/action-cli)
 
 Action-cli is a CLI focused on powering the start of developer's web  project.
@@ -77,16 +77,27 @@ action help
 # show help for command
 action help create
 ```
-
-
-## ✨ Changelog
-
 - 重构create命令
-- create命令新增分支、包管理器、自定命令功能
+- create命令新增分支、包管理器、自动运行、自定命令功能
 - 重构list命令
 - 重构template命令
 - 新增update命令，支持检测脚手架版本更新
-- 优化打包体积
+- 优化打包
+
+## ✨ Changelog
+
+- Refactor the create command
+
+- Add features to the create command including branching, package manager, automatic execution, and custom commands
+
+- Refactor the list command
+
+- Refactor the template command
+
+- Add the update command, which supports detecting scaffolding version updates
+
+- Optimize packaging
+
 
 ## ✨ Features
 
@@ -95,24 +106,33 @@ action help create
 
 | command	| description	| option	| description |
 | ------------ | ------------ | ------------ | ------------ |
-| create \<project-name> | Create a project | 	-f，--force	|Overwrite target directory if it exists|
-|    |  |--template <template-name>	| template or git-url（string）|
+| create \<project-name> | Create a project |-t, --template [template-name]	| template or git-url（string）|
+|    |  | 	-f, --force	|Overwrite target directory if it exists|
+|    |  |-b, --branch [branch-name]	| Specify a branch to clone |
+|    |  |-r, --run	| Run the project after creation |
+|    |  |-c, --command [command]	| Specify a command to run |
+|    |  |-pm, --packageManager [package-manager]	| Specify a package manager to use |
 | list |	List available templates |	-	| - |
 | add \<template-name> \<template-url> |	Add a new template	| - |	- |
 | remove \<template-name> | Remove an existing template	| - |	- |
+| update | Update the cli to the latest version	| - |	- |
 | ui	| Open the web-based UI |	-p, --port [port]	|Specify port (number)|
-|-| -|-h, --host [host]	| Specify hostname (string)|
+|-| -|-h,  --host [host]	| Specify hostname (string)|
 |-	|-|	-V，--version	|Display version number|
 |-|-|-h，--help	|Display available CLI options|
 | help [command]	|Display help for command|	--help	|Display help for command|
 | ...|	-|	-|	-|
 
 
-## Pictures
-![Action-cli](https://github.com/Topskys/action-cli/blob/main/src/static/50f1ea3e69c84525889ff872e6aa07ad.png)
+## Screenshots
 
-![Example](https://github.com/Topskys/action-cli/blob/main/src/static/f1ad8257d7db42019781cd69e0660c8a.png)
 
+![o1](https://i-blog.csdnimg.cn/blog_migrate/e302771d8c20af304879a645d8bdb41b.png)
+
+
+## Repository
+
+[Topskys/action-cli](https://github.com/Topskys/action-cli)
 
 ## 🛠️ Run
 
@@ -143,23 +163,8 @@ npm publish
 ```
 
 ## Blog
-[CSDN](https://blog.csdn.net/qq_58062502)
 
-## Git 提交规范参考
-
-- `feat` 增加新的业务功能
-- `fix` 修复业务问题/BUG
-- `perf` 优化性能
-- `style` 更改代码风格, 不影响运行结果
-- `refactor` 重构代码
-- `revert` 撤销更改
-- `test` 测试相关, 不涉及业务代码的更改
-- `docs` 文档和注释相关
-- `chore` 更新依赖/修改脚手架配置等琐事
-- `workflow` 工作流改进
-- `ci` 持续集成相关
-- `types` 类型定义文件更改
-- `wip` 开发中
+[实现一个自定义前端脚手架_前端自定义脚手架-CSDN博客](https://blog.csdn.net/qq_58062502/article/details/136307480?fromshare=blogdetail&sharetype=blogdetail&sharerId=136307480&sharerefer=PC&sharesource=qq_58062502&sharefrom=from_link)
 
 ## Thanks
 
