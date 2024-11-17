@@ -1,7 +1,6 @@
 # Action-cli
 
-![Action-cli](https://img.shields.io/badge/Action-cli)
-![NPM Version](https://img.shields.io/npm/v/action-cli)
+![NPM Version](https://img.shields.io/badge/action-cli_v1.1.0-green)
 ![NPM Downloads](https://img.shields.io/npm/dy/action-cli)
 
 
