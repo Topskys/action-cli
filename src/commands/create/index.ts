@@ -2,7 +2,7 @@ import chalk from "chalk";
 import * as path from "path";
 import * as fs from "fs-extra";
 import inquirer from "inquirer";
-import { gitClone, loading, readTemplates } from "@/utils";
+import { downloadProgress, gitClone, loading, readTemplates } from "@/utils";
 import { HTTP_URL_REGEX } from "@/utils/constants";
 import { CreateOptions, TemplateInfo } from "@/utils/types";
 
@@ -117,11 +117,20 @@ async function selectTemplate(templates: Record<string, string>) {
   return answers.template;
 }
 
+/**
+ * 下载模板函数
+ *
+ * @param projectName 项目名称
+ * @param templateInfo 模板信息
+ * @returns 无返回值
+ */
 async function downloadTemplate(
   projectName: string,
   templateInfo: TemplateInfo
 ) {
   const loadingOptions = {
+    text: "downloading...",
+    // cb: () => downloadProgress(gitClone(projectName, templateInfo)) ,
     cb: () => gitClone(projectName, templateInfo),
     okText:
       `Initialization ${projectName} successfully. Now run:\n` +

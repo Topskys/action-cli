@@ -18,6 +18,16 @@ export type LoadingOptions = {
   retryDelay?: number; // 重试间隔时间
   okText?: string; // 成功提示文本
   failureText?: string; // 失败提示文本
+  color?:
+    | "black"
+    | "red"
+    | "green"
+    | "yellow"
+    | "blue"
+    | "magenta"
+    | "cyan"
+    | "white"
+    | "gray"; // 提示文本颜色
 };
 
 /**

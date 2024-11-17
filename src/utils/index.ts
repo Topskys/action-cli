@@ -6,7 +6,7 @@ import axios from "axios";
 import { HTTP_URL_REGEX, NPM_URL } from "./constants";
 import { LoadingOptions, TemplateInfo } from "./types";
 import simpleGit, { SimpleGit, SimpleGitOptions } from "simple-git";
-import ProgressEstimator from "progress-estimator";
+import ProgressEstimator, { LogOption } from "progress-estimator";
 
 // 重试次数
 let retryCount = 0;
@@ -27,15 +27,13 @@ export async function loading(options: LoadingOptions, ...args) {
     failureText = "failure",
     maxRetries = 2,
     retryDelay = 200,
+    color = "yellow",
   } = options;
 
   //  实例化加载动画
   const spinner = ora({
     text,
-    spinner: {
-      interval: 80,
-      frames: ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"],
-    },
+    color,
   });
   spinner.start();
 
@@ -138,15 +136,31 @@ export function readTemplates() {
   });
 }
 
-const progress = ProgressEstimator({
-  spinner: {
-    interval: 300,
-    frames: ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"].map((item) =>
-      chalk.green(item)
-    ),
-  },
-});
+const logger = ProgressEstimator();
 
+/**
+ * 下载进度函数
+ *
+ * @param cb 一个返回 Promise 的函数
+ * @param loadingText 加载提示文字，默认为 "downloading..."
+ * @param options 可选参数，包含日志选项
+ * @returns 返回传入函数的 Promise 结果
+ */
+export async function downloadProgress<T>(
+  cb: Promise<T>,
+  loadingText = "downloading...",
+  options?: LogOption
+) {
+  const { estimate = 7 * 1000 } = options || {};
+  return await logger(cb, loadingText, { estimate });
+}
+
+/**
+ * 使用git克隆项目
+ *
+ * @param projectName 项目名称
+ * @param templateInfo 模板信息对象，包含模板的URL和分支信息
+ */
 export async function gitClone(
   projectName: string,
   templateInfo: TemplateInfo
