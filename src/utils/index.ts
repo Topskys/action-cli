@@ -182,7 +182,5 @@ export async function gitClone(
  * @returns 默认分支名
  */
 export function getDefaultBranch(url: string) {
-  if (!HTTP_URL_REGEX.test(url)) return "main";
-  if (url.includes("gitee.com")) return "master";
-  return "main";
+  return url.includes("gitee.com") ? "master" : "main";
 }

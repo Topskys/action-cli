@@ -78,18 +78,18 @@ async function getTemplateInfo(template?: string, branch?: string) {
   // 模板为空时
   if (!template) {
     const key = await selectTemplate(templates);
-    return generateTemplateInfo(key, templates[key]);
+    return generateTemplateInfo(key, templates[key], branch);
   }
   // 传入template是url地址
   if (HTTP_URL_REGEX.test(template)) {
-    return generateTemplateInfo(template, template);
+    return generateTemplateInfo(template, template, branch);
   }
   // 传入template是模板名称，但templates.json没有对应模板
   if (!templates[template]) {
     console.error(chalk.redBright(`${template} is not found`));
     return;
   }
-  return generateTemplateInfo(template, templates[template]);
+  return generateTemplateInfo(template, templates[template], branch);
 }
 
 /**
@@ -99,11 +99,11 @@ async function getTemplateInfo(template?: string, branch?: string) {
  * @param url 模板的 URL
  * @returns 模板信息对象
  */
-function generateTemplateInfo(name: string, url: string) {
+function generateTemplateInfo(name: string, url: string, branch?: string) {
   const templateInfo: TemplateInfo = {
     name,
     url,
-    branch: getDefaultBranch(url),
+    branch: branch || getDefaultBranch(url),
   };
   return templateInfo;
 }
