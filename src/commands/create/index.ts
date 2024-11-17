@@ -9,7 +9,7 @@ import {
   loading,
   readTemplates,
 } from "@/utils";
-import { HTTP_URL_REGEX } from "@/utils/constants";
+import { HTTP_URL_REGEX, PACKAGE_MANAGER } from "@/utils/constants";
 import { CreateOptions, TemplateInfo } from "@/utils/types";
 import { execSync } from "child_process";
 
@@ -32,12 +32,16 @@ export default async (projectName: string, options: CreateOptions) => {
     const projectDir = await overwrite(projectName, force);
     // 获取模板信息
     const templateInfo = await getTemplateInfo(template, branch);
+    // 判断是否需要自动运行项目
+    const autoRun = await selectAutoRun(run);
+    // 获取包管理器
+    const pm = await selectPackageManager(packageManager);
     // 下载模板并创建项目目录
-    await downloadTemplate(projectName, templateInfo);
+    await downloadTemplate(projectName, templateInfo, pm);
     // 自动运行项目
-    await autoRun(run, projectDir, packageManager, command);
+    autoRun && handleAutoRun(projectDir, pm, command);
   } catch (e) {
-    console.error(`Creation failed, due to ${JSON.stringify(e)}`);
+    console.error(`Creation failed, due to ${e}`);
     process.exit();
   }
 };
@@ -140,18 +144,20 @@ async function selectTemplate(templates: Record<string, string>) {
  *
  * @param projectName 项目名称
  * @param templateInfo 模板信息
+ * @param pm 包管理器名称
  * @returns 无返回值
  */
 async function downloadTemplate(
   projectName: string,
-  templateInfo: TemplateInfo
+  templateInfo: TemplateInfo,
+  pm: string
 ) {
   const loadingOptions = {
     text: "downloading...",
     cb: () => gitClone(projectName, templateInfo),
     okText:
       `Initialization ${projectName} successfully. Now run:\n` +
-      chalk.cyan(`  cd ${projectName}\n  npm install\n  npm run dev`),
+      chalk.cyan(`  cd ${projectName}\n  ${pm} install\n  ${pm} run dev\n`),
     failureText: chalk.red(`Initialization ${projectName} failed.\n`),
   };
   await loading(loadingOptions);
@@ -161,23 +167,10 @@ async function downloadTemplate(
  * 自动运行项目
  *
  * @param run 是否自动运行项目，默认为 false
- * @param projectDir 项目目录路径
- * @param packageManager 包管理器
- * @param cmd 可选参数，指定自定义命令字符串
  */
-async function autoRun(
-  run?: boolean,
-  projectDir?: string,
-  packageManager?: string,
-  cmd?: string
-) {
-  if (!run || !projectDir) return;
-  if (!fs.existsSync(projectDir)) {
-    console.error(chalk.red("Project directory not found."));
-    process.exit(); // 终止进程
-  }
+async function selectAutoRun(run?: boolean) {
   // 如果没有传run，则询问是否自动运行
-  if (typeof run === "boolean" && !run) return;
+  if (typeof run === "boolean" && !run) return false;
   if (run == null) {
     const questions = [
       {
@@ -188,10 +181,9 @@ async function autoRun(
       },
     ];
     const answer = await inquirer.prompt(questions);
-    if (!answer.autoRun) process.exit(); // 终止进程
+    if (!answer.autoRun) return false;
   }
-  // 自动运行项目
-  handleAutoRun(projectDir, packageManager, cmd);
+  return true;
 }
 
 /**
@@ -206,7 +198,7 @@ function handleAutoRun(
   packageManager?: string,
   cmd?: string
 ) {
-  const pm = isPackageManger(packageManager);
+  const pm = packageManager;
   const command = cmd || `${pm} install && ${pm} run dev`;
   try {
     // 执行命令，继承stdio以直接在控制台显示输出
@@ -215,4 +207,27 @@ function handleAutoRun(
     console.error(chalk.red("Run the project failed.\n"));
     process.exit(); // 终止进程
   }
+}
+
+/**
+ * 选择包管理器
+ *
+ * @param pm 包管理器名称，可选参数
+ * @returns 返回所选的包管理器名称
+ */
+async function selectPackageManager(pm?: string) {
+  if (typeof pm === "string" && pm) {
+    return isPackageManger(pm);
+  }
+  const questions = [
+    {
+      type: "list",
+      name: "packageManager",
+      choices: PACKAGE_MANAGER,
+      default: "pnpm",
+      message: `Which package manager do you want to use?`,
+    },
+  ];
+  const answer = await inquirer.prompt(questions);
+  return answer.packageManager;
 }

@@ -1,7 +1,7 @@
 import chalk from "chalk";
-import { readTemplateSync } from "@/utils";
-import * as pkg from "../../../package.json";
+import { getPackageJson, readTemplateSync } from "@/utils";
 
+const pkg = getPackageJson();
 const name = Object.keys(pkg.bin)[0];
 
 /**

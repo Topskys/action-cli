@@ -25,6 +25,10 @@ const commands = {
         msg: "run the project after creation",
       },
       {
+        cmd: "-c,--command [command]",
+        msg: "specify a command to run",
+      },
+      {
         cmd: "-pm,--packageManager [package-manager]",
         msg: "specify a package manager to use",
       },

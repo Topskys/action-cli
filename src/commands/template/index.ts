@@ -3,9 +3,9 @@ import path from "path";
 import * as fs from "fs-extra";
 import { readTemplates } from "@/utils";
 import chalk from "chalk";
-import { HTTP_URL_REGEX } from "@/utils/constants";
+import { HTTP_URL_REGEX, TEMPLATE_FILE } from "@/utils/constants";
 
-const templatePath = path.resolve(__dirname, "templates.json");
+const templatePath = path.resolve(__dirname, TEMPLATE_FILE);
 
 /**
  * 添加模板操作命令处理函数

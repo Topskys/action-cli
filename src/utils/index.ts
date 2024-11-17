@@ -3,7 +3,8 @@ import chalk from "chalk";
 import * as path from "path";
 import * as fs from "fs-extra";
 import axios from "axios";
-import { HTTP_URL_REGEX, NPM_URL, PACKAGE_MANAGER } from "./constants";
+import * as pkg from "../../package.json";
+import { HTTP_URL_REGEX, NPM_URL, PACKAGE_MANAGER, TEMPLATE_FILE } from "./constants";
 import { LoadingOptions, TemplateInfo } from "./types";
 import simpleGit, { SimpleGit, SimpleGitOptions } from "simple-git";
 import ProgressEstimator, { LogOption } from "progress-estimator";
@@ -117,7 +118,7 @@ export async function checkVersion(name: string, version: string) {
   }
 }
 
-const templatesPath = path.resolve(__dirname, "templates.json");
+const templatesPath = path.resolve(__dirname, TEMPLATE_FILE);
 
 /**
  * 读取模板文件
@@ -212,3 +213,6 @@ export function getDefaultBranch(url: string, defBranch = "main") {
 export function isPackageManger(name: string, pm = "pnpm") {
   return PACKAGE_MANAGER.includes(name) ? name : pm;
 }
+
+// 获取项目根目录下的 package.json 文件内容
+export const getPackageJson = () => pkg;
