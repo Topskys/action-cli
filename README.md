@@ -29,8 +29,8 @@ action create demo
 Your can create a new project with the template of your choice:
 
 ```sh
-# create a new project with the react+ts template
-action create demo --template react+ts
+# create a new project with the react template
+action create demo --template react
 # or
 action create demo --template https://github.com/demo/react-admin-template.git
 
@@ -77,12 +77,6 @@ action help
 # show help for command
 action help create
 ```
-- 重构create命令
-- create命令新增分支、包管理器、自动运行、自定命令功能
-- 重构list命令
-- 重构template命令
-- 新增update命令，支持检测脚手架版本更新
-- 优化打包
 
 ## ✨ Changelog
 
@@ -100,8 +94,6 @@ action help create
 
 
 ## ✨ Features
-
-**Features:**
 
 
 | command	| description	| option	| description |
@@ -152,14 +144,6 @@ pnpm link
 
 # todo
 action create demo
-```
-
-## NPM
-```sh
-# login（https://registry.npmjs.org/） 
-npm login
-# publish
-npm publish
 ```
 
 ## Blog
