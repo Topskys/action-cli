@@ -1,10 +1,97 @@
 # Action-cli
+
+![Action-cli](https://img.shields.io/badge/Action-cli)
+![NPM Version](https://img.shields.io/npm/v/action-cli)
+![NPM Downloads](https://img.shields.io/npm/dy/action-cli)
+
+
 [![NPM](https://img.shields.io/badge/NPM-%23CB3837.svg?style=for-the-badge&logo=npm&logoColor=white)](https://github.com/Topskys/action-cli)
 [![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Topskys/action-cli)
 
 Action-cli is a CLI focused on powering the start of developer's web  project.
 
+## ⚡ Installation
+```sh
+# global install
+npm install -g action-cli
+```
+
+## 🚀 Usage
+
+**Create**
+
+Create a new project:
+```sh
+# create a new project
+action create demo
+
+```
+Your can create a new project with the template of your choice:
+
+```sh
+# create a new project with the react+ts template
+action create demo --template react+ts
+# or
+action create demo --template https://github.com/demo/react-admin-template.git
+
+```
+
+You can use the web-based UI to create a new project:
+```sh
+# open the web-based UI
+action ui
+```
+**Template**
+
+Show available templates:
+```sh
+# list available templates
+action list
+```
+Add or remove a template:
+
+```sh
+# add a new template
+action add vue-ts https://github.com/demo/vue-admin-template.git
+
+# remove an existing template
+action remove vue-ts
+```
+
+**Update**
+
+When a new version is detected, you can use this command to update the scaffolding.
+update action-cli:
+```sh
+# update action-cli
+action update
+```
+
+**Help**
+
+show help:
+```sh
+# show help
+action help
+
+# show help for command
+action help create
+```
+
+
+## ✨ Changelog
+
+- 重构create命令
+- create命令新增分支、包管理器、自定命令功能
+- 重构list命令
+- 重构template命令
+- 新增update命令，支持检测脚手架版本更新
+- 优化打包体积
+
+## ✨ Features
+
 **Features:**
+
 
 | command	| description	| option	| description |
 | ------------ | ------------ | ------------ | ------------ |
@@ -21,36 +108,6 @@ Action-cli is a CLI focused on powering the start of developer's web  project.
 | ...|	-|	-|	-|
 
 
-## ⚡ Installation
-```sh
-# global install
-npm install -g action-cli
-```
-
-## 🚀 Usage
-```sh
-# create a new project
-action create demo -f --template react+ts
-# or
-action create demo -f --template https://github.com/demo/react-admin-template.git
-
-# list available templates
-action list
-
-# add a new template
-action add vue+ts https://github.com/demo/vue-admin-template.git
-
-# remove an existing template
-action remove vue+ts
-
-# open the web-based UI
-action ui
-
-# display help for command
-action help
-
-# ...
-```
 ## Pictures
 ![Action-cli](https://github.com/Topskys/action-cli/blob/main/src/static/50f1ea3e69c84525889ff872e6aa07ad.png)
 
@@ -58,14 +115,21 @@ action help
 
 
 ## 🛠️ Run
+
 Development
 ```sh
+# clone repo
+git clone https://github.com/Topskys/action-cli.git
+
 # install dependencies
 pnpm install
+
 # transform
 pnpm run build
+
 # global link
 pnpm link
+
 # todo
 action create demo
 ```
