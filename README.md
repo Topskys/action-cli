@@ -151,7 +151,9 @@ action create demo
 
 ## Blog
 
-[实现一个自定义前端脚手架_前端自定义脚手架-CSDN博客](https://blog.csdn.net/qq_58062502/article/details/136307480?fromshare=blogdetail&sharetype=blogdetail&sharerId=136307480&sharerefer=PC&sharesource=qq_58062502&sharefrom=from_link)
+[重构Action-cli前端脚手架-CSDN博客](https://blog.csdn.net/qq_58062502/article/details/143836796)
+
+[实现一个自定义前端脚手架-CSDN博客](https://blog.csdn.net/qq_58062502/article/details/136307480)
 
 ## Thanks
 
