@@ -9,7 +9,7 @@ import { execSync } from "child_process";
 
 /**
  * 创建一个新的项目。
- * 
+ *
  * @param projectName 新项目的名称。
  * @param options 创建选项，包括：
  *  - force: 是否强制覆盖已存在的项目目录。
@@ -17,9 +17,10 @@ import { execSync } from "child_process";
  *  - branch: 用于获取模板的分支。
  *  - run: 创建项目后是否自动运行。
  *  - packageManager: 用于运行项目的包管理器。
+ *  - cmd 可选参数，指定自定义命令字符串
  */
 export default async (projectName: string, options: CreateOptions) => {
-  const { force, template, branch, run, packageManager } = options;
+  const { force, template, branch, run, packageManager, command } = options;
   try {
     // 判断是否需要覆盖项目目录
     const projectDir = await overwrite(projectName, force);
@@ -28,7 +29,7 @@ export default async (projectName: string, options: CreateOptions) => {
     // 下载模板并创建项目目录
     await downloadTemplate(projectName, templateInfo);
     // 自动运行项目
-    await autoRun(run, projectDir, packageManager);
+    await autoRun(run, projectDir, packageManager, command);
   } catch (e) {
     console.error(`Creation failed, due to ${JSON.stringify(e)}`);
     process.exit();
@@ -156,11 +157,13 @@ async function downloadTemplate(
  * @param run 是否自动运行项目，默认为 false
  * @param projectDir 项目目录路径
  * @param packageManager 包管理器
+ * @param cmd 可选参数，指定自定义命令字符串
  */
 async function autoRun(
   run?: boolean,
   projectDir?: string,
-  packageManager?: string
+  packageManager?: string,
+  cmd?: string
 ) {
   if (!run || !projectDir) return;
   if (!fs.existsSync(projectDir)) {
@@ -182,21 +185,28 @@ async function autoRun(
     if (!answer.autoRun) process.exit(); // 终止进程
   }
   // 自动运行项目
-  handleAutoRun(projectDir, packageManager);
+  handleAutoRun(projectDir, packageManager, cmd);
 }
 
 /**
- * 执行自动运行shell脚本
+ * 自动运行项目
  *
- * @param projectDir 项目目录
+ * @param projectDir 项目目录路径
  * @param packageManager 包管理工具，默认为 "pnpm"
+ * @param cmd 可选参数，指定自定义命令字符串
  */
-function handleAutoRun(projectDir: string, packageManager = "pnpm") {
-  const command = `${packageManager} install && ${packageManager} run dev`;
+function handleAutoRun(
+  projectDir: string,
+  packageManager = "pnpm",
+  cmd?: string
+) {
+  const command =
+    cmd || `${packageManager} install && ${packageManager} run dev`;
   try {
-    execSync(command, { cwd: projectDir });
+    // 执行命令，继承stdio以直接在控制台显示输出
+    execSync(command, { cwd: projectDir, stdio: "inherit" });
   } catch (e) {
     console.error(chalk.red("Run the project failed.\n"));
-    return;
+    process.exit(); // 终止进程
   }
 }

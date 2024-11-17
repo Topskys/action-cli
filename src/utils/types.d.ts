@@ -39,4 +39,5 @@ export type CreateOptions = {
   branch?: string; // 下载分支名称
   run?: boolean; // 是否自动运行
   packageManager?: string; // 包管理器
+  command?: string; // 命令字符串
 };
