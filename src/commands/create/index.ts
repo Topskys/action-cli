@@ -2,7 +2,7 @@ import chalk from "chalk";
 import * as path from "path";
 import * as fs from "fs-extra";
 import inquirer from "inquirer";
-import { downloadProgress, gitClone, loading, readTemplates } from "@/utils";
+import { getDefaultBranch, gitClone, loading, readTemplates } from "@/utils";
 import { HTTP_URL_REGEX } from "@/utils/constants";
 import { CreateOptions, TemplateInfo } from "@/utils/types";
 
@@ -23,13 +23,13 @@ export default async (projectName: string, options: CreateOptions) => {
   const { force, template, branch } = options;
   try {
     // 判断是否需要覆盖项目目录
-    const targetDir = await overwrite(projectName, force);
+    await overwrite(projectName, force);
     // 获取模板信息
     const templateInfo = await getTemplateInfo(template, branch);
     // 下载模板并创建项目目录
     await downloadTemplate(projectName, templateInfo);
   } catch (e) {
-    console.log(`Error：${typeof e == "string" ? e : JSON.stringify(e)}`);
+    console.error(`Creation failed, due to ${JSON.stringify(e)}`);
     process.exit();
   }
 };
@@ -47,7 +47,7 @@ async function overwrite(projectName: string, force?: boolean) {
   // 如果目录已存在且没传force，则询问是否覆盖，否则终止程序
   if (typeof force === "boolean" && !force) return;
   // 如果没有传值force，则询问是否覆盖
-  if (force == null) { 
+  if (force == null) {
     const questions = [
       {
         type: "confirm",
@@ -70,33 +70,41 @@ async function overwrite(projectName: string, force?: boolean) {
  * 获取模板信息
  *
  * @param template 可选的模板名称或URL地址
- * @param branch 分支名称，默认为 "main"
+ * @param branch 可选的分支名称，默认为 "main"
  * @returns 返回包含模板信息的对象，或undefined（如果未找到模板）
  */
-async function getTemplateInfo(template?: string, branch = "main") {
+async function getTemplateInfo(template?: string, branch?: string) {
   const templates = (await readTemplates()) as Record<string, string>;
-  let templateInfo: TemplateInfo = {};
-  templateInfo.branch = branch;
   // 模板为空时
   if (!template) {
     const key = await selectTemplate(templates);
-    templateInfo.name = key;
-    templateInfo.url = templates[key];
-    return templateInfo;
+    return generateTemplateInfo(key, templates[key]);
   }
   // 传入template是url地址
   if (HTTP_URL_REGEX.test(template)) {
-    templateInfo.name = template;
-    templateInfo.url = template;
-    return templateInfo;
+    return generateTemplateInfo(template, template);
   }
   // 传入template是模板名称，但templates.json没有对应模板
   if (!templates[template]) {
-    console.log(chalk.redBright(`${template} is not found`));
+    console.error(chalk.redBright(`${template} is not found`));
     return;
   }
-  templateInfo.name = template;
-  templateInfo.url = templates[template];
+  return generateTemplateInfo(template, templates[template]);
+}
+
+/**
+ * 生成模板信息
+ *
+ * @param name 模板名称
+ * @param url 模板的 URL
+ * @returns 模板信息对象
+ */
+function generateTemplateInfo(name: string, url: string) {
+  const templateInfo: TemplateInfo = {
+    name,
+    url,
+    branch: getDefaultBranch(url),
+  };
   return templateInfo;
 }
 

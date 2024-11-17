@@ -174,3 +174,15 @@ export async function gitClone(
   const git = simpleGit(options);
   await git.clone(templateInfo.url, projectName, ["-b", templateInfo.branch]);
 }
+
+/**
+ * 获取仓库的默认分支名
+ *
+ * @param url 仓库的URL
+ * @returns 默认分支名
+ */
+export function getDefaultBranch(url: string) {
+  if (!HTTP_URL_REGEX.test(url)) return "main";
+  if (url.includes("gitee.com")) return "master";
+  return "main";
+}
