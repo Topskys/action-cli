@@ -1,23 +1,23 @@
-import { defineConfig } from 'rollup';
-import nodeResolve from '@rollup/plugin-node-resolve';
-import commonjs from '@rollup/plugin-commonjs';
+import { defineConfig } from "rollup";
+import nodeResolve from "@rollup/plugin-node-resolve";
+import commonjs from "@rollup/plugin-commonjs";
 import externals from "rollup-plugin-node-externals";
 import json from "@rollup/plugin-json";
 import terser from "@rollup/plugin-terser";
-import typescript from 'rollup-plugin-typescript2';
+import typescript from "rollup-plugin-typescript2";
+import copy from "rollup-plugin-copy";
 
 export default defineConfig([
   {
     input: {
-      index: 'src/index.ts', // 打包入口文件
+      index: "src/index.ts",
     },
     output: [
       {
-        dir: 'dist', // 输出目标文件夹
-        format: 'cjs', // 输出 commonjs 文件
-      }
+        dir: "dist",
+        format: "cjs",
+      },
     ],
-    // 这些依赖的作用上文提到过
     plugins: [
       nodeResolve(),
       externals({
@@ -27,6 +27,15 @@ export default defineConfig([
       json(),
       commonjs(),
       terser(),
+      copy({
+        targets: [
+          {
+            src: "src/templates.json", // 源路径
+            dest: "dist", // 目标路径
+          }, // 复制 templates.json 到 dist 目录下
+        ],
+        copyOnce: true, // 只复制一次
+      }),
     ],
   },
 ]);
