@@ -1,10 +1,11 @@
 import ora from "ora";
 import path from "path";
 import * as fs from "fs-extra";
-import { readTemplateSync } from "@/utils";
+import { readTemplates } from "@/utils";
 import chalk from "chalk";
+import { HTTP_URL_REGEX } from "@/utils/constants";
 
-const templatePath = path.resolve(__dirname, "../../templates.json");
+const templatePath = path.resolve(__dirname, "templates.json");
 
 /**
  * 添加模板操作命令处理函数
@@ -21,14 +22,13 @@ export const addAction = async (
   options
 ) => {
   try {
-    if (!fs.existsSync(templatePath)) {
-      fs.outputFileSync(templatePath, "{}");
+    if (!HTTP_URL_REGEX.test(templateUrl)) {
+      console.log(chalk.red("Please enter the correct URL!"));
+      return;
     }
-    const templateObj = readTemplateSync() as Record<string, string>;
-    templateObj[templateName.trim()] = templateUrl.trim();
-    fs.writeJSONSync(templatePath, templateObj, {
-      encoding: "utf-8",
-    });
+    const tempObj = (await readTemplates()) as Record<string, string>;
+    tempObj[templateName.trim()] = templateUrl.trim();
+    await fs.writeFile(templatePath, JSON.stringify(tempObj, null, 2));
     console.log(chalk.green("Added successfully!"));
   } catch (e) {
     console.log(chalk.red("Add failed!"));
@@ -44,15 +44,9 @@ export const addAction = async (
  */
 export const removeAction = async (templateName: string, options) => {
   try {
-    if (!fs.existsSync(templatePath)) {
-      fs.outputFileSync(templatePath, "{}");
-      process.exit();
-    }
-    const templateObj = readTemplateSync() as Record<string, string>;
-    delete templateObj[templateName.trim()];
-    fs.writeJSONSync(templatePath, templateObj, {
-      encoding: "utf-8",
-    });
+    const tempObj = (await readTemplates()) as Record<string, string>;
+    delete tempObj[templateName.trim()];
+    await fs.writeFile(templatePath, JSON.stringify(tempObj, null, 2));
     console.log(chalk.green("Removed successfully!"));
   } catch (e) {
     console.log(chalk.red("Remove failed!"));

@@ -117,22 +117,23 @@ export async function checkVersion(name: string, version: string) {
   }
 }
 
+const templatesPath = path.resolve(__dirname, "templates.json");
+
 /**
  * 读取模板文件
  *
  * @returns 返回一个Promise，解析为模板对象数组
  */
 export function readTemplates() {
+  if (!fs.existsSync(templatesPath)) {
+    fs.outputFileSync(templatesPath, "{}");
+  }
   return new Promise((resolve, reject) => {
-    fs.readFile(
-      path.resolve(__dirname, "templates.json"),
-      "utf8",
-      (err, data) => {
-        if (err) reject(chalk.red(`Can not read ${path} \n ${err}`));
-        if (!data) reject(chalk.redBright("Error: template is required\n"));
-        resolve(JSON.parse(data));
-      }
-    );
+    fs.readFile(templatesPath, "utf8", (err, data) => {
+      if (err) reject(chalk.red(`Can not read ${path} \n ${err}`));
+      if (!data) reject(chalk.redBright("Error: templates.json is required\n"));
+      resolve(JSON.parse(data));
+    });
   });
 }
 
@@ -144,7 +145,7 @@ export function readTemplates() {
 export function readTemplateSync() {
   let templates: any = {};
   try {
-    templates = fs.readJsonSync(path.join(__dirname, "..", "templates.json"));
+    templates = fs.readJsonSync(templatesPath);
   } catch (e) {
     console.error(chalk.redBright("Error: template is required\n"));
   }
