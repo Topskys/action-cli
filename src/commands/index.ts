@@ -1,8 +1,8 @@
 import uiAction from "./ui";
 import listAction from "./list";
 import createAction from "./create";
-import { addAction, removeAction } from "./template";
 import updateAction from "./update";
+import { addAction, removeAction } from "./template";
 
 const commands = {
   "create <project-name>": {
@@ -13,8 +13,12 @@ const commands = {
         msg: "overwrite target directory if it exists",
       },
       {
-        cmd: "--template [template-name]",
+        cmd: "-t, --template [template-name]",
         msg: "specify a template to use",
+      },
+      {
+        cmd: "-b,--branch [branch-name]",
+        msg: "specify a branch to clone",
       },
     ],
     action: createAction,

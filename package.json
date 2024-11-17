@@ -3,7 +3,6 @@
   "version": "1.0.7",
   "description": "Action-cli is a CLI focused on powering the start of developer's web  project.",
   "main": "index.js",
-  
   "private": true,
   "scripts": {
     "build": "rollup -c rollup.config.js --bundleConfigAsCjs",
@@ -12,7 +11,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "bin": {
-    "action": "./bin/index.js"
+    "action": "bin/index.js"
   },
   "files": [
     "bin",
@@ -43,13 +42,12 @@
     "axios": "^1.6.7",
     "chalk": "^4.0.0",
     "commander": "^12.0.0",
-    "download-git-repo": "^0.0.2",
     "figlet": "^1.7.0",
     "fs-extra": "^11.2.0",
-    "git-clone": "^0.2.0",
-    "gitee-repo": "^0.0.2",
     "inquirer": "^8.2.1",
-    "ora": "^5.0.0"
+    "ora": "^5.0.0",
+    "progress-estimator": "^0.3.1",
+    "simple-git": "^3.27.0"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^28.0.1",

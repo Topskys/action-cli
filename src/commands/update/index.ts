@@ -14,8 +14,8 @@ export default async (options) => {
       if (!tools.includes(tool)) tool = "npm";
       process.execSync(`${tool} install action-cli@latest -g`);
     },
-    succeedMessage: `${chalk.green("update successfully!")}`,
-    failMessage: `${chalk.red("update failed!")}`,
+    okText: `${chalk.green("update successfully!")}`,
+    failureText: `${chalk.red("update failed!")}`,
   };
   await loading(loadingOptions);
 };

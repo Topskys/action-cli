@@ -2,10 +2,11 @@ import ora from "ora";
 import chalk from "chalk";
 import * as path from "path";
 import * as fs from "fs-extra";
-import gitClone from "git-clone";
 import axios from "axios";
-import { NPM_URL } from "./constants";
-import { LoadingOptions } from "./types";
+import { HTTP_URL_REGEX, NPM_URL } from "./constants";
+import { LoadingOptions, TemplateInfo } from "./types";
+import simpleGit, { SimpleGit, SimpleGitOptions } from "simple-git";
+import ProgressEstimator from "progress-estimator";
 
 // 重试次数
 let retryCount = 0;
@@ -20,22 +21,20 @@ let retryCount = 0;
 export async function loading(options: LoadingOptions, ...args) {
   // 解构参数
   const {
-    message = "loading...\n",
+    text = "loading...",
     cb,
-    succeedMessage = "Request succeed\n",
-    failMessage = "Request fail\n",
+    okText = "ok",
+    failureText = "failure",
     maxRetries = 2,
     retryDelay = 200,
   } = options;
 
   //  实例化加载动画
   const spinner = ora({
-    text: message,
+    text,
     spinner: {
-      interval: 300,
-      frames: ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"].map((v) =>
-        chalk.blue(v)
-      ),
+      interval: 80,
+      frames: ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"],
     },
   });
   spinner.start();
@@ -43,11 +42,12 @@ export async function loading(options: LoadingOptions, ...args) {
   // 执行回调函数并等待其返回结果，如果执行失败则进行重试
   try {
     const result = await cb(...args);
-    spinner.succeed(succeedMessage);
+    spinner.succeed(okText);
     return result;
   } catch (e) {
     if (retryCount <= maxRetries) {
-      spinner.fail("Request fail, reTrying\n");
+      retryCount++;
+      spinner.fail("Failure, reTrying...");
       await new Promise<void>((resolve, reject) => {
         setTimeout(() => {
           resolve();
@@ -55,39 +55,11 @@ export async function loading(options: LoadingOptions, ...args) {
       });
       return loading(options, ...args);
     } else {
-      spinner.fail(failMessage);
+      spinner.fail(failureText);
+      return; // 终止程序
     }
   }
 }
-
-/**
- * 克隆
- * @param targetDir 工作目录
- * @param projectName 项目名称
- * @param url git仓库地址
- */
-export const clone = (projectName: string, targetDir: string, url: string) => {
-  const spinner = ora(`Cloning ${url}...`);
-  spinner.start();
-  gitClone(url, targetDir, { checkout: "main" }, async function (err) {
-    if (!err) {
-      spinner.succeed(
-        `Initialization ${projectName} successfully. Now run:\n` +
-          chalk.cyan(`  cd ${projectName}\n  npm install\n  npm run dev`)
-      );
-      await fs.remove(path.join(targetDir, ".git"));
-      process.exit();
-    }
-    spinner.fail(
-      chalk.red(
-        `Clone ${url} failed. ${
-          typeof err == "string" ? err : JSON.stringify(err)
-        }`
-      )
-    );
-    process.exit();
-  });
-};
 
 /**
  * 获取指定npm包的最新版本号
@@ -145,4 +117,46 @@ export async function checkVersion(name: string, version: string) {
       )}, or alternatively, run ${chalk.yellow("action update")}`
     );
   }
+}
+
+/**
+ * 读取模板文件
+ *
+ * @returns 返回一个Promise，解析为模板对象数组
+ */
+export function readTemplates() {
+  return new Promise((resolve, reject) => {
+    fs.readFile(
+      path.resolve(__dirname, "templates.json"),
+      "utf8",
+      (err, data) => {
+        if (err) reject(chalk.red(`Can not read ${path} \n ${err}`));
+        if (!data) reject(chalk.redBright("Error: template is required\n"));
+        resolve(JSON.parse(data));
+      }
+    );
+  });
+}
+
+const progress = ProgressEstimator({
+  spinner: {
+    interval: 300,
+    frames: ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"].map((item) =>
+      chalk.green(item)
+    ),
+  },
+});
+
+export async function gitClone(
+  projectName: string,
+  templateInfo: TemplateInfo
+) {
+  const options: Partial<SimpleGitOptions> = {
+    baseDir: process.cwd(), // 工作目录
+    binary: "git", // git二进制文件
+    maxConcurrentProcesses: 6, // 最大并发进程数
+    trimmed: false, // 是否去除git命令的输出中的换行符和前缀
+  };
+  const git = simpleGit(options);
+  await git.clone(templateInfo.url, projectName, ["-b", templateInfo.branch]);
 }
