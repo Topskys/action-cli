@@ -177,7 +177,7 @@ async function selectAutoRun(run?: boolean) {
         type: "confirm",
         name: "autoRun",
         default: false,
-        message: `run the project automatically after initialization. Auto?`,
+        message: `Run the project automatically after initialization. Auto?`,
       },
     ];
     const answer = await inquirer.prompt(questions);

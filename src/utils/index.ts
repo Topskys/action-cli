@@ -72,7 +72,7 @@ export async function getNpmLatestVersion(name: string) {
     const npmPackageInfo = await axios.get(`${NPM_URL}${name}`);
     version = npmPackageInfo.data["dist-tags"].latest;
   } catch (err) {
-    console.warn(err);
+    console.warn(chalk.yellow(`Can not get latest version of ${name}`));
   }
   return version;
 }
