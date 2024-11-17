@@ -123,8 +123,10 @@ async function downloadTemplate(
 ) {
   const loadingOptions = {
     cb: () => gitClone(projectName, templateInfo),
-    okText: `Initialization ${projectName} successfully. Now run:\n` + chalk.cyan(`  cd ${projectName}\n  npm install\n  npm run dev`),
-    failureText: `Failed to create project ${chalk.red(projectName)}\n`,
+    okText:
+      `Initialization ${projectName} successfully. Now run:\n` +
+      chalk.cyan(`  cd ${projectName}\n  npm install\n  npm run dev`),
+    failureText: chalk.red(`Initialization ${projectName} failed.\n`),
   };
   await loading(loadingOptions);
 }
