@@ -46,19 +46,21 @@ async function overwrite(projectName: string, force?: boolean) {
   if (!fs.existsSync(targetDir)) return targetDir;
   // 如果目录已存在且没传force，则询问是否覆盖，否则终止程序
   if (typeof force === "boolean" && !force) return;
-  // 是否强制覆盖
-  const questions = [
-    {
-      type: "confirm",
-      name: "overwrite",
-      default: false,
-      message: `Target directory ${chalk.cyanBright(
-        targetDir
-      )} already exists. Overwrite?`,
-    },
-  ];
-  const answer = await inquirer.prompt(questions);
-  if (!answer.overwrite) return; // 终止
+  // 如果没有传值force，则询问是否覆盖
+  if (force == null) { 
+    const questions = [
+      {
+        type: "confirm",
+        name: "overwrite",
+        default: false,
+        message: `Target directory ${chalk.cyanBright(
+          targetDir
+        )} already exists. Overwrite?`,
+      },
+    ];
+    const answer = await inquirer.prompt(questions);
+    if (!answer.overwrite) return; // 终止
+  }
   // 删除目录并返回项目路径，重新创建项目目录
   await fs.remove(targetDir);
   return targetDir;
@@ -130,7 +132,6 @@ async function downloadTemplate(
 ) {
   const loadingOptions = {
     text: "downloading...",
-    // cb: () => downloadProgress(gitClone(projectName, templateInfo)) ,
     cb: () => gitClone(projectName, templateInfo),
     okText:
       `Initialization ${projectName} successfully. Now run:\n` +
